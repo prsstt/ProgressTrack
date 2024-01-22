@@ -3,12 +3,15 @@ import 'dart:math';
 
 class Calculator {
   double log10(double x) {
-    return log(x) / log10e;
+    return log(x) / log(10);
   }
 
-  // Metoda do obliczania BMI
-  double calculateBMI(double weight, double height) {
-    return weight / pow(height, 2);
+  double calculateBMI(double weight, double heightInCentimeters) {
+    // Convert height to meters
+    double heightInMeters = heightInCentimeters / 100.0;
+
+    // Calculate BMI using the new formula
+    return weight / pow(heightInMeters, 2);
   }
 
   // Metoda do obliczania BMR dla mężczyzn
@@ -21,28 +24,24 @@ class Calculator {
     return 10 * weight + 6.25 * height - 5 * age - 161;
   }
 
-  // Metoda do obliczania body fatu dla mężczyzn
-  double calculateBodyFatMale(double waist, double height) {
-    return log10(waist) / 0.74 - log10(height);
+  // Updated method to calculate body fat for men
+  double calculateBodyFatMale(double bmi, int age) {
+    return (1.20 * bmi) + (0.23 * age) - 16.2;
   }
 
-  // Metoda do obliczania body fatu dla kobiet
-  double calculateBodyFatFemale(
-      double waist, double hip, double neck, double height) {
-    return log10(waist) + log10(hip - neck) - 97.684 + log10(height) - 78.387;
+  // Zaktualizowana metoda do obliczania body fatu dla kobiet
+  double calculateBodyFatFemale(double bmi, int age) {
+    return (1.20 * bmi) + (0.23 * age) - 5.4;
   }
 
   // Metoda do obliczania FFMI
   double calculateFFMI(double weight, double height, double bodyFat) {
-    return weight /
-        ((1 + bodyFat / 100) / 2) /
-        pow(height, 2) *
-        2.20462 /
-        (pow(1.0188 - height, 0.5));
+    double leanWeight = weight * (1 - bodyFat / 100);
+    return leanWeight / pow(height, 2);
   }
 
   // Metoda do obliczania skorygowanego FFMI
   double calculateAdjustedFFMI(double ffmi, double height) {
-    return ffmi * (6.1 * (1 - 0.0188 - height));
+    return ffmi + (6.1 * (1.8 - height));
   }
 }
