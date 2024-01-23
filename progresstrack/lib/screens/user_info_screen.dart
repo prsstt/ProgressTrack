@@ -185,7 +185,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                   return null;
                 },
               ),
-              if (UserPreferences.user.gender.toLowerCase() == 'man') ...[
+              if (UserPreferences.user.gender.toLowerCase() == 'man' ||
+                  UserPreferences.user.gender.isEmpty) ...[
                 TextFormField(
                   decoration:
                       const InputDecoration(labelText: 'Waist Circumference'),
